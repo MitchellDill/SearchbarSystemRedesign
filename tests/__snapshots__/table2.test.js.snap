@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`continues to render Table2 component correctly 1`] = `
+<div
+  className="T2"
+>
+  <hr />
+  <div
+    className="table2"
+  >
+    <table
+      className="nav"
+    >
+      <tbody>
+        <tr>
+          <td>
+            Home
+          </td>
+          <td>
+            Saved
+          </td>
+          <td>
+            Motors
+          </td>
+          <td>
+            Fashion
+          </td>
+          <td>
+            Electronics
+          </td>
+          <td>
+            Collectibles & Art
+          </td>
+          <td>
+            Home & Garden
+          </td>
+          <td>
+            Sporting Goods
+          </td>
+          <td>
+            Toys
+          </td>
+          <td>
+            Business & industrial
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

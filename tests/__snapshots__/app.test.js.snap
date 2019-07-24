@@ -1,0 +1,411 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`coninues to render App correctly 1`] = `
+<div>
+  <div
+    className="top-bar"
+  >
+    <ul
+      className="top"
+    >
+      <li
+        className="user"
+      >
+        <span
+          className="span-user"
+        >
+          Hi 
+          <b>
+            User
+          </b>
+           (
+          <a
+            className="signin"
+            href="#"
+          >
+            Sign in
+          </a>
+          ) 
+        </span>
+      </li>
+      <li
+        className="Daily-Deals"
+      >
+        <span
+          className="span-dailydeals"
+        >
+          Daily Deals
+        </span>
+      </li>
+      <li
+        className="Gift-Cards"
+      >
+        <span
+          className="span-giftcards"
+        >
+          Gift Cards
+        </span>
+      </li>
+      <li
+        className="Help-Contact"
+      >
+        <span
+          className="span-help"
+        >
+          Help & Contact
+        </span>
+      </li>
+      <li
+        className="deals"
+      >
+        <img
+          id="deals"
+          onClick={[Function]}
+          src="https://ir.ebaystatic.com/cr/v/c1/61203_071519__GG_SM_HRZ_RW29_GenericPrimeMsg_Doodle_150x30_R1.gif"
+        />
+      </li>
+    </ul>
+    <ul
+      id="right-top"
+    >
+      <li
+        className="sell"
+      >
+        <span
+          className="span-sell"
+        >
+          sell
+        </span>
+      </li>
+      <li
+        className="my-ebay"
+      >
+        <span
+          className="span-My"
+        >
+          My ZBay
+        </span>
+      </li>
+      <li
+        className="notifications"
+      >
+        <button
+          className="bell-icon"
+        >
+          <i
+            id="alert"
+          />
+        </button>
+      </li>
+      <li
+        className="Search-cart"
+      >
+        <a
+          className="cart-icon"
+          onClick={[Function]}
+        >
+          <i
+            id="shop"
+          />
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="Search-component"
+  >
+    <div
+      className="w4-white"
+    >
+      <img
+        id="Search-Zbay-logo"
+        onClick={[Function]}
+        src="https://searchcomponent.s3.us-east-2.amazonaws.com/searchpngs/Zbay.png"
+      />
+      <div
+        className="w3-dropdown-hover"
+      >
+        <button
+          aria-expanded="false"
+          className="category-dropdown"
+        >
+          Shop by 
+          <p
+            rowSpan="3"
+          >
+            category
+            <i
+              id="arrow-dropdown"
+            />
+          </p>
+        </button>
+        <div
+          className="w3-dropdown-content"
+        >
+          <table
+            id="drop"
+          >
+            <tbody>
+              <tr>
+                <th>
+                  Collectibles and art 
+                  <i
+                    className="right"
+                    id="arrow"
+                  />
+                </th>
+                <th>
+                  Fashion
+                  <i
+                    className="right"
+                    id="arrow"
+                  />
+                </th>
+                <th>
+                  Sporting goods
+                  <i
+                    className="right"
+                    id="arrow"
+                  />
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  Collectibles
+                </td>
+                <td>
+                  Women
+                </td>
+                <td>
+                  Outdoor sports
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Coins & paper money Antiques
+                </td>
+                <td>
+                  Men
+                </td>
+                <td>
+                  Team sports
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Antiques
+                </td>
+                <td>
+                  Watches
+                </td>
+                <td>
+                  Exercise & fitness
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Sports memorabillia
+                </td>
+                <td>
+                  Shoes
+                </td>
+                <td>
+                  Golf
+                </td>
+              </tr>
+              <tr>
+                <th
+                  rowSpan="1"
+                >
+                  Electronics
+                  <i
+                    className="right"
+                    id="arrow"
+                  />
+                </th>
+                <th
+                  rowSpan="1"
+                >
+                  Home & Garden
+                  <i
+                    className="right"
+                    id="arrow"
+                  />
+                </th>
+                <th
+                  rowSpan="1"
+                >
+                  Toys & Hobbies
+                  <i
+                    className="right"
+                    id="arrow"
+                  />
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  Computers & tables
+                </td>
+                <td>
+                  Yard, garden & outdoor
+                </td>
+                <td>
+                  Vintage & anitques toys
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Cameras & photos
+                </td>
+                <td>
+                  Crafts
+                </td>
+                <td>
+                  Kids toys
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  TV, audio & surveillance
+                </td>
+                <td>
+                  Home improvement
+                </td>
+                <td>
+                  Action figures
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Cell phones & accessories
+                </td>
+                <td>
+                  Pet supplies
+                </td>
+                <td>
+                  Dolls & bears
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <input
+        className="Searchbar"
+        id="search"
+        list="item-names"
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        placeholder="Search for anything"
+        type="text"
+        value=""
+      />
+      <datalist
+        id="item-names"
+      >
+        <select />
+      </datalist>
+      <select
+        className="dropdown"
+      >
+        <option
+          value="All Categories"
+        >
+          All Categories
+        </option>
+        <option
+          value="Antiques"
+        >
+          Anitques
+        </option>
+        <option
+          value="Ar"
+        >
+          Art
+        </option>
+        <option
+          value="Baby"
+        >
+          Baby
+        </option>
+        <option
+          value="Books"
+        >
+          Books
+        </option>
+        <option
+          value="Business & Industrial"
+        >
+          Business & Industrial
+        </option>
+        <option
+          value="Cameras & photos"
+        >
+          Cameras & photos
+        </option>
+        <option
+          value="Cell phone & accessories"
+        >
+          Cell phone & accessories
+        </option>
+      </select>
+      <button
+        className="Search"
+        onClick={[Function]}
+      >
+        Search
+      </button>
+      <div
+        className="showcontent"
+      />
+      <div
+        className="T2"
+      >
+        <hr />
+        <div
+          className="table2"
+        >
+          <table
+            className="nav"
+          >
+            <tbody>
+              <tr>
+                <td>
+                  Home
+                </td>
+                <td>
+                  Saved
+                </td>
+                <td>
+                  Motors
+                </td>
+                <td>
+                  Fashion
+                </td>
+                <td>
+                  Electronics
+                </td>
+                <td>
+                  Collectibles & Art
+                </td>
+                <td>
+                  Home & Garden
+                </td>
+                <td>
+                  Sporting Goods
+                </td>
+                <td>
+                  Toys
+                </td>
+                <td>
+                  Business & industrial
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

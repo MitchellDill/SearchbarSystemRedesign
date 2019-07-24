@@ -1,6 +1,6 @@
 import React from "react";
-import App from "../client/App.js";
 import renderer from "react-test-renderer";
+import App from "../client/App";
 
 it("coninues to render App correctly", () => {
   const tree = renderer.create(<App />).toJSON();

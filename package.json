@@ -9,7 +9,8 @@
     "start": "webpack -d --watch & live-server --port=3030 --watch=dist --open=dist",
     "start-oh": "webpack -d --watch",
     "server": "nodemon ./server/server.js",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "build-dev": "webpack --mode development"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,11 @@
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/dist/css/"
-    ]
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    }
   },
   "author": "",
   "license": "ISC",

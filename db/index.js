@@ -8,11 +8,11 @@ const con = mysql.createConnection({
   database: process.env.NAME
 });
 
-con.connect(function(err) {
-  if (err) throw err;
-  console.log(process.env.HOST, "HOST");
-  console.log("Connected database!");
-});
+// con.connect(function(err) {
+//   if (err) throw err;
+//   console.log(process.env.HOST, "HOST");
+//   console.log("Connected database!");
+// });
 
 // going to get names for each item.
 // going to move all names to react array in order to filter for autofilling functionality

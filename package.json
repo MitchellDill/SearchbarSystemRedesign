@@ -8,7 +8,7 @@
     "test-watch": "jest --watchAll",
     "start": "webpack -d --watch & live-server --port=3030 --watch=dist --open=dist",
     "start-oh": "webpack -d --watch",
-    "server": "nodemon ./server/server.js",
+    "server": "nodemon ./server/listen.js",
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development"
   },
@@ -29,8 +29,7 @@
       "^.+\\.js$": "babel-jest",
       "^.+\\.jsx?$": "babel-jest"
     },
-    "preset": "jest-puppeteer",
-    "testEnvironment": "jsdom"
+    "preset": "jest-puppeteer"
   },
   "author": "",
   "license": "ISC",

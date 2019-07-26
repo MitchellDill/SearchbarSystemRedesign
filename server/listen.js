@@ -1,5 +1,5 @@
-const server = require("./server");
+const { app } = require("./server");
 
-server.app.listen(server.port, () =>
-  console.log(`we got a real one on ${server.port}, folks`)
-);
+const port = 3002;
+
+app.listen(port, () => console.log(`we got a real one on ${port}, folks`));

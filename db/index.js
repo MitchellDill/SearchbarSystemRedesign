@@ -9,17 +9,15 @@ const pool = new Pool({
   port: process.env.PGPORT
 });
 
-pool.on("error", (err, client) => {
-  console.error("Unexpected error on idle client", err);
-  process.exit(-1);
-});
+const getOneName = async id => {
+  const query = `SELECT name FROM tests WHERE "Id"= $1;`;
+  const values = [id];
 
-const getOneName = async () => {
   const client = await pool.connect();
   try {
-    const { rows } = await pool.query(`SELECT * FROM tests;`);
+    const { rows } = await pool.query(query, values);
     console.log(`tests: ${rows[0].name}`);
-    return rows[0].name;
+    return rows[0];
   } finally {
     client.release();
   }
@@ -28,47 +26,12 @@ const getOneName = async () => {
 const getAllNames = async () => {
   const client = await pool.connect();
   try {
-    const { rows } = await pool.query(`SELECT * FROM tests limit 1;`);
-    console.log(`tests: ${rows}`);
+    const { rows } = await pool.query(`SELECT * FROM tests;`);
+    console.log(`tests: ${rows.length}`);
     return rows;
   } finally {
     client.release();
   }
 };
-
-getAllNames().catch(e => console.log(e.stack));
-
-//   // async/await - check out a client
-//   async () => {
-//     const client = await pool.connect()
-//     try {
-//       const res = await client.query('SELECT * FROM users WHERE id = $1', [1])
-//       console.log(res.rows[0])
-//     } finally {
-//       client.release()
-//     }
-//   }
-// )()
-// .catch(e => console.log(e.stack))
-
-// // going to get names for each item.
-// // going to move all names to react array in order to filter for autofilling functionality
-// const findAllNames = cb => {
-//   // placeholder //put in .escape(user) format instead of ${}
-//   con.query(`Select items.name from items`, (err, results) => {
-//     if (err) cb(err);
-//     cb(null, results);
-//   });
-// };
-
-// const getSpecificItem = (item, cb) => {
-//   con.query(
-//     `select * from items where items.name='${item.username}'`,
-//     (err, results) => {
-//       if (err) cb(err);
-//       cb(null, results);
-//     }
-//   );
-// };
 
 module.exports = { getAllNames, getOneName };

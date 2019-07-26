@@ -25,7 +25,8 @@ exports[`coninues to render App correctly 1`] = `
           >
             Sign in
           </a>
-          ) 
+          )
+           
         </span>
       </li>
       <li
@@ -129,7 +130,8 @@ exports[`coninues to render App correctly 1`] = `
           aria-expanded="false"
           className="category-dropdown"
         >
-          Shop by 
+          Shop by
+           
           <p
             rowSpan="3"
           >
@@ -148,7 +150,8 @@ exports[`coninues to render App correctly 1`] = `
             <tbody>
               <tr>
                 <th>
-                  Collectibles and art 
+                  Collectibles and art
+                   
                   <i
                     className="right"
                     id="arrow"

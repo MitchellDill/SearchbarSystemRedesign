@@ -16,7 +16,6 @@ const getOneName = async id => {
   const client = await pool.connect();
   try {
     const { rows } = await pool.query(query, values);
-    console.log(`tests: ${rows[0].name}`);
     return rows[0];
   } finally {
     client.release();
@@ -27,7 +26,6 @@ const getAllNames = async () => {
   const client = await pool.connect();
   try {
     const { rows } = await pool.query(`SELECT * FROM tests;`);
-    console.log(`tests: ${rows.length}`);
     return rows;
   } finally {
     client.release();

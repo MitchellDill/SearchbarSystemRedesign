@@ -5,6 +5,9 @@
 version: 2
 jobs:
   build:
+    branches:
+      only:
+        - db-setup
     docker:
       # specify the version you desire here
       - image: circleci/node:10

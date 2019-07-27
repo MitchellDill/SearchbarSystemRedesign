@@ -46,6 +46,8 @@ jobs:
 
       - run: docker run --rm --name pg-docker -e PGPASSWORD=dockerino -d -p 3050:5432 postgres
 
+      - run: npm run server-test
+
       - run:
           name: Running in a Unique container
           command: |

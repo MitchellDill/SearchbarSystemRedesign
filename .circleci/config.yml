@@ -11,14 +11,17 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:10.16.0-browsers-legacy
+          environment:
+            PGHOST: 127.0.0.1
+            PGUSER: postgres
+            PGPASSWORD: dockerino
+            PGDATABASE: postgres
+            PGPORT: 3050
 
       - image: circleci/postgres:latest
         environment:
-          PGHOST: 127.0.0.1
-          PGUSER: postgres
-          PGPASSWORD: dockerino
-          PGDATABASE: postgres
-          PGPORT: 3050
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -31,7 +34,6 @@ jobs:
       - checkout
 
       - setup_remote_docker:
-          docker_layer_caching: true
 
       # Download and cache dependencies
       - restore_cache:
@@ -41,6 +43,8 @@ jobs:
             - v1-dependencies-
 
       - run: npm install
+
+      - run: docker run --rm --name pg-docker -e PGPASSWORD=dockerino -d -p 3050:5432 postgres
 
       - run:
           name: Running in a Unique container

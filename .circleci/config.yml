@@ -11,6 +11,12 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:latest-browsers
+        environment:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGDATABASE: postgres
+          PGPASSWORD: 5AUFFPAW5
+          PGPORT: 5432
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images

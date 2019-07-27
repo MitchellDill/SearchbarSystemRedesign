@@ -2,11 +2,11 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 const pool = new Pool({
-  host: process.env.PGHOST,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  database: process.env.PGDATABASE,
-  port: process.env.PGPORT
+  host: "localhost",
+  user: "postgres",
+  password: "dockerino",
+  database: "postgres",
+  port: 3050
 });
 
 const getOneName = async id => {
@@ -26,10 +26,13 @@ const getAllNames = async () => {
   const client = await pool.connect();
   try {
     const { rows } = await pool.query(`SELECT * FROM tests;`);
+    console.log(rows);
     return rows;
   } finally {
     client.release();
   }
 };
+
+getAllNames().catch(e => e.stack);
 
 module.exports = { getAllNames, getOneName };

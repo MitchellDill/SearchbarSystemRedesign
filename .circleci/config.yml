@@ -11,12 +11,12 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:10.16.0-browsers-legacy
-          environment:
-            PGHOST: 127.0.0.1
-            PGUSER: postgres
-            PGPASSWORD: dockerino
-            PGDATABASE: postgres
-            PGPORT: 3050
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          PGPASSWORD: dockerino
+          PGDATABASE: postgres
+          PGPORT: 3050
 
       - image: circleci/postgres:latest
         environment:

@@ -18,7 +18,7 @@ jobs:
           PGUSER: $PGUSER
           PGPASSWORD: $PGPASSWORD
           PGDATABASE: $PGDATABASE
-          PGPORT: $PGPORT
+          PGPORT: 3050
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images

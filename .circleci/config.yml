@@ -14,10 +14,10 @@ jobs:
 
       - image: circleci/postgres:latest
         environment:
-          PGHOST: $PGHOST
-          PGUSER: $PGUSER
-          PGPASSWORD: $PGPASSWORD
-          PGDATABASE: $PGDATABASE
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          PGPASSWORD: dockerino
+          PGDATABASE: postgres
           PGPORT: 3050
 
       # Specify service dependencies here if necessary
@@ -29,6 +29,9 @@ jobs:
 
     steps:
       - checkout
+
+      - setup_remote_docker:
+        docker_layer_caching: true
 
       # Download and cache dependencies
       - restore_cache:

@@ -9,9 +9,9 @@ const pool = new Pool({
   port: process.env.PGPORT
 });
 
-const getOneName = async id => {
-  const query = `SELECT name FROM tests WHERE "Id"= $1;`;
-  const values = [id];
+const getOneId = async name => {
+  const query = `SELECT id FROM items WHERE name = $1;`;
+  const values = [name];
 
   const client = await pool.connect();
   try {
@@ -25,7 +25,7 @@ const getOneName = async id => {
 const getAllNames = async () => {
   const client = await pool.connect();
   try {
-    const { rows } = await pool.query(`SELECT * FROM tests;`);
+    const { rows } = await pool.query(`SELECT * FROM items;`);
     console.log(rows);
     return rows;
   } finally {
@@ -35,4 +35,4 @@ const getAllNames = async () => {
 
 getAllNames().catch(e => e.stack);
 
-module.exports = { getAllNames, getOneName };
+module.exports = { getAllNames, getOneId };

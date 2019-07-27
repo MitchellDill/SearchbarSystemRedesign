@@ -72,7 +72,7 @@ class Search extends React.Component {
     console.log(target);
 
     //http://ec2-18-212-65-184.compute-1.amazonaws.com:3001/find
-    Axios.post("http:localhost:3002/find", {
+    Axios.post("/find", {
       name: target
     }) //going to use the first arr in the autocorrection
       .then(response => {
@@ -95,7 +95,7 @@ class Search extends React.Component {
     window.addEventListener("updateQty", e =>
       this.setState({ qty: e.detail.totalQty })
     );
-    Axios.get("http://localhost:3002/items") //recieving all names from all the Autofilling names
+    Axios.get("/items") //recieving all names from all the Autofilling names
       .then(response => {
         this.setState({ items: response.data });
       })

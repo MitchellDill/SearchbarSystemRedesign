@@ -27,12 +27,12 @@ describe("GET /items", () => {
 });
 
 describe("POST /find", () => {
-  test("responds with a specific name given a product Id", () => {
+  test("responds with an item ID given an item name", () => {
     return request(app)
       .post("/find")
-      .send({ id: 3 })
+      .send({ name: "gotenks" })
       .then(res => {
-        expect(res.text).toBe("gotenks");
+        expect(JSON.parse(res.text)[0].productID).toBe(3);
       });
   });
 });

@@ -15,8 +15,8 @@ jobs:
           PGHOST: localhost
           PGUSER: postgres
           PGDATABASE: postgres
-          PGPASSWORD: 5AUFFPAW5
-          PGPORT: 5432
+          PGPASSWORD: dockerino
+          PGPORT: 3050
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images

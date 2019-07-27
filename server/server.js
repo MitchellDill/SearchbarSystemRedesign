@@ -25,8 +25,8 @@ app.get("/items", async (req, res) => {
 });
 
 app.post("/find", async (req, res) => {
-  const nameRow = await db.getOneName(req.body.id);
-  res.send(nameRow.name);
+  const idRow = await db.getOneId(req.body.name);
+  res.send([{ productID: idRow.id }]);
 });
 
 module.exports = { app, port };

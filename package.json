@@ -9,6 +9,7 @@
     "start": "webpack -d --watch & live-server --port=3030 --watch=dist --open=dist",
     "start-oh": "webpack -d --watch",
     "server": "nodemon ./server/listen.js",
+    "server-test": "node ./server/listen.js",
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development"
   },

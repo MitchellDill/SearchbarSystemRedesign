@@ -12,6 +12,7 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:latest-browsers
 
+      - image: circleci/postgres:latest
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -40,6 +41,11 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: start server
+          command: |
+            npm run server-test
 
       # run tests!
       - run: npm test

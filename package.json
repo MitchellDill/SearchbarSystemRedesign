@@ -52,7 +52,6 @@
     "material-ui": "^0.20.2",
     "materialize-css": "^1.0.0-rc.2",
     "mongoose": "^5.5.14",
-    "mysql": "^2.17.1",
     "pg": "^7.12.0",
     "react": "^16.8.6",
     "react-autocomplete": "^1.8.1",

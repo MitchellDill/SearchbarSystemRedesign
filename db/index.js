@@ -2,11 +2,11 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 const pool = new Pool({
-  host: "localhost",
-  user: "postgres",
-  password: "dockerino",
-  database: "postgres",
-  port: 3050
+  host: process.env.PGHOST,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  database: process.env.PGHDATABASE,
+  port: process.env.PGPORT
 });
 
 const getOneName = async id => {

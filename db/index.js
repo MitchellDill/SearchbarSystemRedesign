@@ -50,23 +50,19 @@ const getAllNames = async () => {
 );`);
   await client.release();
 
-  const values = [];
   let outerLoopProgress = 0;
 
-  const createQuery = () => {
+  const createQuery = valuesArr => {
     let query = "INSERT INTO items (productId, name) VALUES";
     for (let i = 0; i < rowCount; i++) {
       const fakeItem = faker.fake("{{name.firstName}} {{hacker.ingverb}}");
       const productId = `${outerLoopProgress + (i + 1)}`
         .toString()
         .padStart(8, "0");
-      values.push(productId);
-      values.push(fakeItem);
+      valuesArr.push(productId);
+      valuesArr.push(fakeItem);
       console.log(productId);
-      query += `($${i + i + outerLoopProgress * 2 + 1}, $${i +
-        i +
-        outerLoopProgress * 2 +
-        2})`;
+      query += `($${i + i + 1}, $${i + i + 2})`;
       if (i !== rowCount - 1) {
         query += ", ";
       }
@@ -75,10 +71,10 @@ const getAllNames = async () => {
   };
 
   for (let i = 0; i < loopCountInThousands; i++) {
+    const values = [];
     client = await pool.connect();
     try {
-      const query = await createQuery();
-      console.log(query, values.slice(2000));
+      const query = await createQuery(values);
       await client.query(query, values);
     } catch (e) {
       console.log(e);
@@ -87,6 +83,6 @@ const getAllNames = async () => {
     }
     outerLoopProgress += 1000;
   }
-})(2, 1000).catch(e => console.log(e.stack));
+})(100, 1000).catch(e => console.log(e.stack));
 
 module.exports = { getAllNames, getOneId };

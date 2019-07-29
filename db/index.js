@@ -8,11 +8,16 @@ const pool = new Pool({
   password: process.env.PGPASSWORD,
   database: process.env.PGHDATABASE,
   port: process.env.PGPORT,
-  max: 50
+  max: 30
+});
+
+pool.on("error", (err, client) => {
+  console.error("Unexpected error on idle client", err);
+  process.exit(-1);
 });
 
 const getOneId = async name => {
-  const query = `SELECT id FROM items WHERE name = $1;`;
+  const query = `SELECT ProductId FROM items WHERE name = $1;`;
   const values = [name];
 
   const client = await pool.connect();
@@ -35,22 +40,53 @@ const getAllNames = async () => {
   }
 };
 
-const seedItems = async quantity => {
-  for (let i = 0; i < quantity; i++) {
-    const fakeItem = faker.fake(
-      "{{random.word}} {{name.firstName}} {{hacker.ingverb}} {{name.firstName}}"
-    );
-    console.log(i + 1);
-    const values = [fakeItem];
-    const client = await pool.connect();
+(async function seedPostgres(loopCountInThousands, rowCount) {
+  let client = await pool.connect();
+  await client.query(`DROP TABLE IF EXISTS items;`);
+  await client.query(`CREATE TABLE items (
+    rowId SERIAL,
+    productId VARCHAR(8) NOT NULL,
+    name VARCHAR(255) NOT NULL  
+);`);
+  await client.release();
+
+  const values = [];
+  let outerLoopProgress = 0;
+
+  const createQuery = () => {
+    let query = "INSERT INTO items (productId, name) VALUES";
+    for (let i = 0; i < rowCount; i++) {
+      const fakeItem = faker.fake("{{name.firstName}} {{hacker.ingverb}}");
+      const productId = `${outerLoopProgress + (i + 1)}`
+        .toString()
+        .padStart(8, "0");
+      values.push(productId);
+      values.push(fakeItem);
+      console.log(productId);
+      query += `($${i + i + outerLoopProgress * 2 + 1}, $${i +
+        i +
+        outerLoopProgress * 2 +
+        2})`;
+      if (i !== rowCount - 1) {
+        query += ", ";
+      }
+    }
+    return `${query};`;
+  };
+
+  for (let i = 0; i < loopCountInThousands; i++) {
+    client = await pool.connect();
     try {
-      pool.query(`INSERT INTO items (name) VALUES ($1);`, values);
+      const query = await createQuery();
+      console.log(query, values.slice(2000));
+      await client.query(query, values);
+    } catch (e) {
+      console.log(e);
     } finally {
       client.release();
     }
+    outerLoopProgress += 1000;
   }
-};
-
-seedItems(5000).catch(e => e.stack);
+})(2, 1000).catch(e => console.log(e.stack));
 
 module.exports = { getAllNames, getOneId };

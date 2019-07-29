@@ -1,4 +1,5 @@
 const { Pool } = require("pg");
+const faker = require("faker");
 require("dotenv").config();
 
 const pool = new Pool({
@@ -6,7 +7,8 @@ const pool = new Pool({
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   database: process.env.PGHDATABASE,
-  port: process.env.PGPORT
+  port: process.env.PGPORT,
+  max: 50
 });
 
 const getOneId = async name => {
@@ -33,6 +35,22 @@ const getAllNames = async () => {
   }
 };
 
-getAllNames().catch(e => e.stack);
+const seedItems = async quantity => {
+  for (let i = 0; i < quantity; i++) {
+    const fakeItem = faker.fake(
+      "{{random.word}} {{name.firstName}} {{hacker.ingverb}} {{name.firstName}}"
+    );
+    console.log(i + 1);
+    const values = [fakeItem];
+    const client = await pool.connect();
+    try {
+      pool.query(`INSERT INTO items (name) VALUES ($1);`, values);
+    } finally {
+      client.release();
+    }
+  }
+};
+
+seedItems(5000).catch(e => e.stack);
 
 module.exports = { getAllNames, getOneId };

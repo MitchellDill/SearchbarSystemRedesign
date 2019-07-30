@@ -1,13 +1,14 @@
 const { Pool } = require("pg");
 const faker = require("faker");
 require("dotenv").config();
+
 const { seedPostgres } = require("./seedPostgres");
 
 const pool = new Pool({
   host: process.env.PGHOST,
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
-  database: process.env.PGHDATABASE,
+  database: process.env.PGDATABASE,
   port: process.env.PGPORT
 });
 

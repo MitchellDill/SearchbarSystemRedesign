@@ -11,7 +11,7 @@
     "server": "nodemon ./server/listen.js",
     "server-test": "node ./server/listen.js",
     "build": "webpack --mode production",
-    "build-dev": "webpack --mode development"
+    "build-dev": "webpack --mode development --watch"
   },
   "repository": {
     "type": "git",

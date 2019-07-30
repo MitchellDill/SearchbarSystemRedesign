@@ -30,11 +30,13 @@ const getOneId = async name => {
   }
 };
 
-const getAllNames = async () => {
+const getRelevantNames = async term => {
+  const query = `SELECT * FROM items WHERE name LIKE $1 LIMIT 10;`;
+  const values = [`${term}%`];
+
   const client = await pool.connect();
   try {
-    const { rows } = await pool.query(`SELECT * FROM items;`);
-    console.log(rows);
+    const { rows } = await pool.query(query, values);
     return rows;
   } finally {
     client.release();
@@ -43,4 +45,4 @@ const getAllNames = async () => {
 
 // seedPostgres(10000, 1000).catch(e => console.log(e.stack));
 
-module.exports = { getAllNames, getOneId };
+module.exports = { getRelevantNames, getOneId };

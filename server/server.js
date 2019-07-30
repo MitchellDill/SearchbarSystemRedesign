@@ -5,7 +5,7 @@ const compression = require("compression");
 const db = require("../db");
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = 3001;
 
 app.use(express.static("dist"));
 app.use(express.json());
@@ -13,28 +13,20 @@ app.use(parser.json({ strict: false }));
 app.use(cors());
 app.use(compression());
 
-app.get("/items", (req, res) => {
-  db.findAllNames((err, suc) => {
-    if (err) console.log(err);
-    console.log(suc, "SERVER");
+app.use("/static", express.static("dist"));
 
-    const results = [];
-    for (let i = 0; i < suc.length; i++) {
-      results.push(suc[i].name.toLowerCase());
-    }
-    console.log(results, "should be lower case");
-    res.send(results);
-  });
+app.get("/items", async (req, res) => {
+  const nameRows = await db.getAllNames();
+  res.send(
+    nameRows.map(row => {
+      return row.name;
+    })
+  );
 });
 
-app.post("/find", (req, res) => {
-
-  db.getSpecificItem({ username: req.body.name }, (err, results) => {
-    if (err) console.log("ERRRRR", err);
-    res.send(results);
-  });
+app.post("/find", async (req, res) => {
+  const idRow = await db.getOneId(req.body.name);
+  res.send([{ productID: idRow.id }]);
 });
 
-app.listen(port, () =>
-  console.log(`shenanigans have started on aisle ${port}`)
-);
+module.exports = { app, port };

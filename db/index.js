@@ -1,11 +1,13 @@
 const { Pool } = require("pg");
+const faker = require("faker");
 require("dotenv").config();
+const { seedPostgres } = require("./seedPostgres");
 
 const pool = new Pool({
   host: process.env.PGHOST,
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
-  database: process.env.PGDATABASE,
+  database: process.env.PGHDATABASE,
   port: process.env.PGPORT
 });
 
@@ -14,12 +16,14 @@ pool.on("error", (err, client) => {
   process.exit(-1);
 });
 
-const getOneName = async () => {
+const getOneId = async name => {
+  const query = `SELECT ProductId FROM items WHERE name = $1;`;
+  const values = [name];
+
   const client = await pool.connect();
   try {
-    const { rows } = await pool.query(`SELECT * FROM tests;`);
-    console.log(`tests: ${rows[0].name}`);
-    return rows[0].name;
+    const { rows } = await pool.query(query, values);
+    return rows[0];
   } finally {
     client.release();
   }
@@ -28,47 +32,14 @@ const getOneName = async () => {
 const getAllNames = async () => {
   const client = await pool.connect();
   try {
-    const { rows } = await pool.query(`SELECT * FROM tests limit 1;`);
-    console.log(`tests: ${rows}`);
+    const { rows } = await pool.query(`SELECT * FROM items;`);
+    console.log(rows);
     return rows;
   } finally {
     client.release();
   }
 };
 
-getAllNames().catch(e => console.log(e.stack));
+// seedPostgres(10000, 1000).catch(e => console.log(e.stack));
 
-//   // async/await - check out a client
-//   async () => {
-//     const client = await pool.connect()
-//     try {
-//       const res = await client.query('SELECT * FROM users WHERE id = $1', [1])
-//       console.log(res.rows[0])
-//     } finally {
-//       client.release()
-//     }
-//   }
-// )()
-// .catch(e => console.log(e.stack))
-
-// // going to get names for each item.
-// // going to move all names to react array in order to filter for autofilling functionality
-// const findAllNames = cb => {
-//   // placeholder //put in .escape(user) format instead of ${}
-//   con.query(`Select items.name from items`, (err, results) => {
-//     if (err) cb(err);
-//     cb(null, results);
-//   });
-// };
-
-// const getSpecificItem = (item, cb) => {
-//   con.query(
-//     `select * from items where items.name='${item.username}'`,
-//     (err, results) => {
-//       if (err) cb(err);
-//       cb(null, results);
-//     }
-//   );
-// };
-
-module.exports = { getAllNames, getOneName };
+module.exports = { getAllNames, getOneId };

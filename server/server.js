@@ -26,6 +26,13 @@ app.get("/items", async (req, res) => {
   );
 });
 
+app.post("/items", async (req, res) => {
+  const rowId = Number(req.body.id);
+  const updateRow = await db.updateRelevance(rowId);
+  console.log("post request: ", updateRow);
+  res.sendStatus(201);
+});
+
 app.get("/find", async (req, res) => {
   console.log("find endpoint says: ", req.query.name);
   const regex = /[\/:.]+/g;

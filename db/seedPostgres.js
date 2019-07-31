@@ -16,7 +16,8 @@ const seedPostgres = async (loopCountInThousands, rowCount) => {
   await client.query(`CREATE TABLE items (
       rowId SERIAL,
       productId VARCHAR(8) NOT NULL,
-      name VARCHAR(255) NOT NULL  
+      name VARCHAR(255) NOT NULL,
+      relevance INT  
   );`);
   await client.release();
 
@@ -55,6 +56,9 @@ const seedPostgres = async (loopCountInThousands, rowCount) => {
     outerLoopProgress += 1000;
     console.log(i * 1000);
   }
+
+  await client.query(`CREATE INDEX name_index ON items (name);`);
+  await client.query(`ALTER TABLE items ADD PRIMARY KEY (rowId);`);
   await pool.end();
 };
 

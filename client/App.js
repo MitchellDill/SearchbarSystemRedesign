@@ -74,15 +74,22 @@ class Search extends React.Component {
 
     Axios.get(`/find?name=${target}`)
       .then(response => {
-        console.log(response.data[0].productID);
+        const id = response.data[0].productID;
+        console.log(id);
 
         window.dispatchEvent(
           new CustomEvent("productChanged", {
             detail: {
-              id: response.data[0].productID
+              id: id
             }
           })
         );
+        return id;
+      })
+      .then(id => {
+        Axios.post(`/items`, {
+          id: id
+        });
       })
       .catch(err => console.log(err));
   }

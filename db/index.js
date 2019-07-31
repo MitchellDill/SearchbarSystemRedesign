@@ -24,6 +24,7 @@ const getOneId = async name => {
   const client = await pool.connect();
   try {
     const { rows } = await pool.query(query, values);
+    console.log(rows);
     return rows[0];
   } finally {
     client.release();
@@ -31,8 +32,21 @@ const getOneId = async name => {
 };
 
 const getRelevantNames = async term => {
-  const query = `SELECT * FROM items WHERE name LIKE $1 LIMIT 30;`;
+  const query = `SELECT * FROM items WHERE name LIKE $1 ORDER BY relevance DESC LIMIT 30;`;
   const values = [`${term}%`];
+
+  const client = await pool.connect();
+  try {
+    const { rows } = await client.query(query, values);
+    return rows;
+  } finally {
+    client.release();
+  }
+};
+
+const updateRelevance = async id => {
+  const query = `UPDATE items SET relevance = relevance + 1 WHERE RowId = $1 RETURNING productId, relevance;`;
+  const values = [id];
 
   const client = await pool.connect();
   try {
@@ -45,4 +59,4 @@ const getRelevantNames = async term => {
 
 // seedPostgres(10000, 1000).catch(e => console.log(e.stack));
 
-module.exports = { getRelevantNames, getOneId };
+module.exports = { getRelevantNames, getOneId, updateRelevance };

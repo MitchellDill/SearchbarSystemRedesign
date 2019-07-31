@@ -20,6 +20,7 @@ class Search extends React.Component {
     this.handleKey = this.handleKey.bind(this);
     this.randomItem = this.randomItem.bind(this);
     this.handleKillerDeals = this.handleKillerDeals.bind(this);
+    this.getSuggestions = this.getSuggestions.bind(this);
   }
 
   handleCart(e) {
@@ -71,20 +72,24 @@ class Search extends React.Component {
     );
     console.log(target);
 
-    //http://ec2-18-212-65-184.compute-1.amazonaws.com:3001/find
-    Axios.post("/find", {
-      name: target
-    }) //going to use the first arr in the autocorrection
+    Axios.get(`/find?name=${target}`)
       .then(response => {
-        console.log(response.data[0].productID);
+        const id = response.data[0].productID;
+        console.log(id);
 
         window.dispatchEvent(
           new CustomEvent("productChanged", {
             detail: {
-              id: response.data[0].productID
+              id: id
             }
           })
         );
+        return id;
+      })
+      .then(id => {
+        Axios.post(`/items`, {
+          id: id
+        });
       })
       .catch(err => console.log(err));
   }
@@ -95,21 +100,35 @@ class Search extends React.Component {
     window.addEventListener("updateQty", e =>
       this.setState({ qty: e.detail.totalQty })
     );
-    Axios.get("/items") //recieving all names from all the Autofilling names
-      .then(response => {
-        this.setState({ items: response.data });
-      })
-      .catch(err => console.log("ERR", err));
+    // Axios.get("/items") //recieving all names from all the Autofilling names
+    //   .then(response => {
+    //     this.setState({ items: response.data });
+    //   })
+    //   .catch(err => console.log("ERR", err));
+  }
+
+  getSuggestions(searchTerm) {
+    console.log(searchTerm);
+    return Axios.get(`/items?search=${searchTerm}`);
   }
 
   handleSelection(e) {
-    this.setState({ input: e.target.value });
-    if (this.state.items.includes(e.target.value)) {
-      // console.log(e.target.value);
-      this.handleSubmit(e.target.value, true);
-    } else {
-      null;
-    }
+    const searchTerm = e.target.value;
+    this.setState({ input: searchTerm });
+    this.getSuggestions(searchTerm)
+      .then(response => {
+        console.log("response says, ", response);
+        this.setState({ items: response.data });
+        return response.data;
+      })
+      .then(data => {
+        if (data.includes(searchTerm)) {
+          this.handleSubmit(searchTerm, true);
+        } else {
+          null;
+        }
+      })
+      .catch(err => console.log("error! error! ", err));
   }
 
   handleKey = e => {
@@ -121,14 +140,14 @@ class Search extends React.Component {
   handleKillerDeals() {
     const killerDeals =
       "Rudolph The Red Nose Reindeer Light Up Christmas Santa Hat Cap Holiday New";
-    this.handleSubmit(killerDeals, true);
+    // this.handleSubmit(killerDeals, true);
   }
 
   randomItem() {
     const randomPos = parseInt(Math.random() * 100);
     const randomItem = this.state.items[randomPos];
 
-    this.handleSubmit(randomItem, true); //true will mean that in handle submit it wont try to take the input, and instead, take the random item from click
+    // this.handleSubmit(randomItem, true); //true will mean that in handle submit it wont try to take the input, and instead, take the random item from click
   }
 
   render() {
@@ -158,7 +177,7 @@ class Search extends React.Component {
               <img
                 id="deals"
                 src="https://ir.ebaystatic.com/cr/v/c1/61203_071519__GG_SM_HRZ_RW29_GenericPrimeMsg_Doodle_150x30_R1.gif"
-                onClick={this.handleKillerDeals}
+                // onClick={this.handleKillerDeals}
               ></img>
             </li>
           </ul>

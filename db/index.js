@@ -1,17 +1,18 @@
 const { Pool } = require("pg");
-const faker = require("faker");
 require("dotenv").config();
+
 const { seedPostgres } = require("./seedPostgres");
 
 const pool = new Pool({
   host: process.env.PGHOST,
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
-  database: process.env.PGHDATABASE,
-  port: process.env.PGPORT
+  database: process.env.PGDATABASE,
+  port: process.env.PGPORT,
+  max: 50
 });
 
-pool.on("error", (err, client) => {
+pool.on("error", err => {
   console.error("Unexpected error on idle client", err);
   process.exit(-1);
 });
@@ -29,11 +30,26 @@ const getOneId = async name => {
   }
 };
 
-const getAllNames = async () => {
+const getRelevantNames = async term => {
+  const query = `SELECT * FROM items WHERE name LIKE $1 ORDER BY relevance DESC LIMIT 30;`;
+  const values = [`${term}%`];
+
   const client = await pool.connect();
   try {
-    const { rows } = await pool.query(`SELECT * FROM items;`);
-    console.log(rows);
+    const { rows } = await client.query(query, values);
+    return rows;
+  } finally {
+    client.release();
+  }
+};
+
+const updateRelevance = async id => {
+  const query = `UPDATE items SET relevance = relevance + 1 WHERE RowId = $1 RETURNING productId, relevance;`;
+  const values = [id];
+
+  const client = await pool.connect();
+  try {
+    const { rows } = await client.query(query, values);
     return rows;
   } finally {
     client.release();
@@ -42,4 +58,4 @@ const getAllNames = async () => {
 
 // seedPostgres(10000, 1000).catch(e => console.log(e.stack));
 
-module.exports = { getAllNames, getOneId };
+module.exports = { getRelevantNames, getOneId, updateRelevance };

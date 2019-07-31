@@ -5,7 +5,6 @@ const compression = require("compression");
 const db = require("../db");
 
 const app = express();
-const port = 3001;
 
 app.use(express.static("dist"));
 app.use(express.json());
@@ -16,7 +15,10 @@ app.use(compression());
 app.use("/static", express.static("dist"));
 
 app.get("/items", async (req, res) => {
-  const nameRows = await db.getAllNames();
+  const regex = /[\/:.]+/g;
+  const term = req.query.search.replace(regex, "");
+  console.log("items endpoint says: ", req.query.search);
+  const nameRows = await db.getRelevantNames(term);
   res.send(
     nameRows.map(row => {
       return row.name;
@@ -24,9 +26,19 @@ app.get("/items", async (req, res) => {
   );
 });
 
-app.post("/find", async (req, res) => {
-  const idRow = await db.getOneId(req.body.name);
-  res.send([{ productID: idRow.id }]);
+app.post("/items", async (req, res) => {
+  const rowId = Number(req.body.id);
+  const updateRow = await db.updateRelevance(rowId);
+  console.log("post request: ", updateRow);
+  res.sendStatus(201);
 });
 
-module.exports = { app, port };
+app.get("/find", async (req, res) => {
+  console.log("find endpoint says: ", req.query.name);
+  const regex = /[\/:.]+/g;
+  const productName = req.query.name.replace(regex, "");
+  const idRow = await db.getOneId(productName);
+  res.send([{ productID: idRow.productid }]);
+});
+
+module.exports = { app };

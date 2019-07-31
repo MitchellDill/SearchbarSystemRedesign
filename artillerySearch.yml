@@ -1,0 +1,18 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 5
+      arrivalRate: 20
+  defaults:
+    headers:
+      x-my-service-auth: "987401838271002188298567"
+scenarios:
+  - flow:
+      - loop:
+          - get:
+              url: "/"
+          - get:
+              url: "/items?search=W"
+          - get:
+              url: "/find?name=Wendy%20backing%20up%20Hermiston%20-%20Christiansen"
+        count: 2000

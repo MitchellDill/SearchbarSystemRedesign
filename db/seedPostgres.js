@@ -5,7 +5,7 @@ const pool = new Pool({
   host: process.env.PGHOST,
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
-  database: process.env.PGHDATABASE,
+  database: process.env.PGDATABASE,
   port: process.env.PGPORT,
   max: 75
 });
@@ -16,7 +16,8 @@ const seedPostgres = async (loopCountInThousands, rowCount) => {
   await client.query(`CREATE TABLE items (
       rowId SERIAL,
       productId VARCHAR(8) NOT NULL,
-      name VARCHAR(255) NOT NULL  
+      name VARCHAR(255) NOT NULL,
+      relevance INT  
   );`);
   await client.release();
 
@@ -25,7 +26,9 @@ const seedPostgres = async (loopCountInThousands, rowCount) => {
   const createQuery = valuesArr => {
     let query = "INSERT INTO items (productId, name) VALUES";
     for (let i = 0; i < rowCount; i++) {
-      const fakeItem = faker.fake("{{name.firstName}} {{hacker.ingverb}}");
+      const fakeItem = faker.fake(
+        "{{name.firstName}} {{hacker.ingverb}} {{company.companyName}}"
+      );
       const productId = `${outerLoopProgress + (i + 1)}`
         .toString()
         .padStart(8, "0");
@@ -53,6 +56,9 @@ const seedPostgres = async (loopCountInThousands, rowCount) => {
     outerLoopProgress += 1000;
     console.log(i * 1000);
   }
+
+  await client.query(`CREATE INDEX name_index ON items (name);`);
+  await client.query(`ALTER TABLE items ADD PRIMARY KEY (rowId);`);
   await pool.end();
 };
 

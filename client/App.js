@@ -133,7 +133,7 @@ class Search extends React.Component {
 
   handleKey = e => {
     if (e.key === "Enter") {
-      // this.handleSubmit();
+      this.handleSubmit();
     }
   };
 
@@ -177,7 +177,7 @@ class Search extends React.Component {
               <img
                 id="deals"
                 src="https://ir.ebaystatic.com/cr/v/c1/61203_071519__GG_SM_HRZ_RW29_GenericPrimeMsg_Doodle_150x30_R1.gif"
-                onClick={this.handleKillerDeals}
+                // onClick={this.handleKillerDeals}
               ></img>
             </li>
           </ul>
@@ -328,9 +328,9 @@ class Search extends React.Component {
                 Cell phone & accessories
               </option>
             </select>
-            {/* <button className="Search" onClick={this.handleSubmit}>
+            <button className="Search" onClick={this.handleSubmit}>
               Search
-            </button> */}
+            </button>
             <div className="showcontent"></div>
             {<Table2 />}
           </div>

@@ -24,7 +24,6 @@ const getOneId = async name => {
   const client = await pool.connect();
   try {
     const { rows } = await pool.query(query, values);
-    console.log(rows);
     return rows[0];
   } finally {
     client.release();

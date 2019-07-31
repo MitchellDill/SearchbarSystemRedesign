@@ -25,7 +25,9 @@ const seedPostgres = async (loopCountInThousands, rowCount) => {
   const createQuery = valuesArr => {
     let query = "INSERT INTO items (productId, name) VALUES";
     for (let i = 0; i < rowCount; i++) {
-      const fakeItem = faker.fake("{{name.firstName}} {{hacker.ingverb}}");
+      const fakeItem = faker.fake(
+        "{{name.firstName}} {{hacker.ingverb}} {{company.companyName}}"
+      );
       const productId = `${outerLoopProgress + (i + 1)}`
         .toString()
         .padStart(8, "0");

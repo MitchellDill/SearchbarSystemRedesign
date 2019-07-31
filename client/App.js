@@ -72,9 +72,7 @@ class Search extends React.Component {
     );
     console.log(target);
 
-    Axios.post("/find", {
-      name: target
-    }) //going to use the first arr in the autocorrection
+    Axios.get(`/find?name=${target}`)
       .then(response => {
         console.log(response.data[0].productID);
 
@@ -108,22 +106,22 @@ class Search extends React.Component {
   }
 
   handleSelection(e) {
-    this.setState({ input: e.target.value });
-    this.getSuggestions(e.target.value)
+    const searchTerm = e.target.value;
+    this.setState({ input: searchTerm });
+    this.getSuggestions(searchTerm)
       .then(response => {
         console.log("response says, ", response);
         this.setState({ items: response.data });
+        return response.data;
       })
-      .then(res => {
-        if (this.state.items.includes(e.target.value)) {
-          // console.log(e.target.value);
-          // this.handleSubmit(e.target.value, true);
+      .then(data => {
+        if (data.includes(searchTerm)) {
+          this.handleSubmit(searchTerm, true);
         } else {
           null;
         }
       })
       .catch(err => console.log("error! error! ", err));
-    console.log(this.state);
   }
 
   handleKey = e => {

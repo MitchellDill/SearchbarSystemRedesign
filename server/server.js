@@ -17,7 +17,7 @@ app.use("/static", express.static("dist"));
 app.get("/items", async (req, res) => {
   const regex = /[\/:.]+/g;
   const term = req.query.search.replace(regex, "");
-  console.log("get req: ", req.query.search, term);
+  console.log("items endpoint says: ", req.query.search);
   const nameRows = await db.getRelevantNames(term);
   res.send(
     nameRows.map(row => {
@@ -26,12 +26,12 @@ app.get("/items", async (req, res) => {
   );
 });
 
-app.post("/find", async (req, res) => {
-  console.log("post req: ", req.body.name);
+app.get("/find", async (req, res) => {
+  console.log("find endpoint says: ", req.query.name);
   const regex = /[\/:.]+/g;
-  const productName = req.body.name.replace(regex, "");
+  const productName = req.query.name.replace(regex, "");
   const idRow = await db.getOneId(productName);
-  res.send([{ productID: idRow.productId }]);
+  res.send([{ productID: idRow.productid }]);
 });
 
 module.exports = { app };

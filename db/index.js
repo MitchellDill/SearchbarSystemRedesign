@@ -1,5 +1,4 @@
 const { Pool } = require("pg");
-const faker = require("faker");
 require("dotenv").config();
 
 const { seedPostgres } = require("./seedPostgres");
@@ -9,10 +8,11 @@ const pool = new Pool({
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   database: process.env.PGDATABASE,
-  port: process.env.PGPORT
+  port: process.env.PGPORT,
+  max: 50
 });
 
-pool.on("error", (err, client) => {
+pool.on("error", err => {
   console.error("Unexpected error on idle client", err);
   process.exit(-1);
 });
@@ -31,12 +31,12 @@ const getOneId = async name => {
 };
 
 const getRelevantNames = async term => {
-  const query = `SELECT * FROM items WHERE name LIKE $1 LIMIT 10;`;
+  const query = `SELECT * FROM items WHERE name LIKE $1 LIMIT 30;`;
   const values = [`${term}%`];
 
   const client = await pool.connect();
   try {
-    const { rows } = await pool.query(query, values);
+    const { rows } = await client.query(query, values);
     return rows;
   } finally {
     client.release();

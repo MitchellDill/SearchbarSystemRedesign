@@ -38,17 +38,9 @@ app.get("/items", async (req, res) => {
 });
 
 app.post("/seeds", async (req, res) => {
-  const result = await elasticDb.seedElasticDB(5);
+  const result = await elasticDb.seedElasticDB(10000);
   console.log(`The seeds be: ${result}`);
-  res.send(
-    result.map(item => {
-      return {
-        result: item.result,
-        shards: item._shards,
-        numberInIndex: item._seq_no
-      };
-    })
-  );
+  res.send(result);
 });
 
 app.post("/items", async (req, res) => {

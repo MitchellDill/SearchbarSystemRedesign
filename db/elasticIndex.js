@@ -19,23 +19,36 @@ const getRelevantNames = async term => {
 };
 
 const seedElasticDB = async quantity => {
-  const seedResults = [];
-  const putItem = async productId => {
-    const { body } = await client.index({
-      index: "items",
-      body: {
+  //   const seedResults = [];
+  let productId = 1;
+
+  const putItem = async () => {
+    const bulkInsert = genItems(200);
+    const { body } = await client.bulk({ index: "items", body: bulkInsert });
+    // seedResults.push(body);
+  };
+
+  const genItems = count => {
+    let bulk = "";
+    for (let i = 1; i <= count; i++) {
+      bulk += `${JSON.stringify({ index: { _id: productId } })}\n`;
+      bulk += `${JSON.stringify({
         productId,
-        name: faker.fake("{{name.firstName}} {{company.bsBuzz}}"),
-        relevance: 0
-      }
-    });
-    seedResults.push(body);
+        name: faker.fake("{{name.firstName}}")
+      })}\n`;
+      productId += 1;
+    }
+    return bulk;
   };
 
   for (let i = 1; i <= quantity; i++) {
-    await putItem(i).catch(e => console.log(e.stack));
+    putItem().catch(e => console.log(e.stack));
+    console.log(i);
   }
-  return seedResults;
+  return "all done!";
 };
+
+const fakeString =
+  "{{name.firstName}} {{commerce.productName}} {{company.bsBuzz}} {{hacker.ingverb}} {{commerce.color}}";
 
 module.exports = { getRelevantNames, seedElasticDB };

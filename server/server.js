@@ -3,6 +3,7 @@ const cors = require("cors");
 const parser = require("body-parser");
 const compression = require("compression");
 const db = require("../db");
+const elasticDb = require("../db/elasticIndex");
 
 const app = express();
 
@@ -12,16 +13,40 @@ app.use(parser.json({ strict: false }));
 app.use(cors());
 app.use(compression());
 
+// middleware for GET routes, implement later
+// const sanitizeQuery = (req, res, next) => {
+//   const regex = /[\/:.]+/g;
+//   const searchTerm = req.query.search.replace(regex, "");
+//   req.body.query = searchTerm;
+//   next();
+// }
+
 app.use("/static", express.static("dist"));
 
 app.get("/items", async (req, res) => {
   const regex = /[\/:.]+/g;
   const term = req.query.search.replace(regex, "");
   console.log("items endpoint says: ", req.query.search);
-  const nameRows = await db.getRelevantNames(term);
+  // const nameRows = await db.getRelevantNames(term);
+  // res.send(
+  //   nameRows.map(row => {
+  //     return row.name;
+  //   })
+  // );
+  const { body } = await elasticDb.getRelevantNames(term);
+  res.send(body);
+});
+
+app.post("/seeds", async (req, res) => {
+  const result = await elasticDb.seedElasticDB(5);
+  console.log(`The seeds be: ${result}`);
   res.send(
-    nameRows.map(row => {
-      return row.name;
+    result.map(item => {
+      return {
+        result: item.result,
+        shards: item._shards,
+        numberInIndex: item._seq_no
+      };
     })
   );
 });

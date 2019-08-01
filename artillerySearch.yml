@@ -1,7 +1,7 @@
 config:
   target: "http://localhost:3001"
   phases:
-    - duration: 5
+    - duration: 60
       arrivalRate: 20
   defaults:
     headers:
@@ -15,4 +15,4 @@ scenarios:
               url: "/items?search=W"
           - get:
               url: "/find?name=Wendy%20backing%20up%20Hermiston%20-%20Christiansen"
-        count: 2000
+        count: 200

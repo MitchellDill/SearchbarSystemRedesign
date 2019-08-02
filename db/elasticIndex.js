@@ -4,28 +4,54 @@ const faker = require("faker");
 const client = new Client({ node: "http://localhost:9200" });
 
 const getRelevantNames = async term => {
-  const result = await client.search({
-    index: "items",
+  const { body } = await client.search({
     body: {
       query: {
-        match: {
+        fuzzy: {
           name: term
         }
       },
-      size: 30
+      _source: ["productId", "name"],
+      size: 500
     }
   });
-  return result;
+  return body.hits.hits;
 };
 
 const seedElasticDB = async quantity => {
   //   const seedResults = [];
+  let category;
+  let categoryName;
   let productId = 1;
 
-  const putItem = async () => {
-    const bulkInsert = genItems(200);
-    const { body } = await client.bulk({ index: "items", body: bulkInsert });
-    // seedResults.push(body);
+  const selectCategory = () => {
+    const dict = {
+      1: "names",
+      2: "jobs",
+      3: "ipsums",
+      4: "hacks",
+      5: "colors",
+      6: "products",
+      7: "buzzes",
+      8: "departments"
+    };
+    category = Math.floor(Math.random() * 8) + 1;
+    categoryName = dict[category];
+    return dict[category];
+  };
+
+  const genName = () => {
+    const dict = {
+      1: faker.name.firstName(),
+      2: faker.name.jobType(),
+      3: faker.lorem.word(),
+      4: faker.hacker.noun(),
+      5: faker.commerce.color(),
+      6: faker.commerce.productName(),
+      7: faker.company.bsBuzz(),
+      8: faker.commerce.department()
+    };
+    return dict[category];
   };
 
   const genItems = count => {
@@ -34,16 +60,23 @@ const seedElasticDB = async quantity => {
       bulk += `${JSON.stringify({ index: { _id: productId } })}\n`;
       bulk += `${JSON.stringify({
         productId,
-        name: faker.fake("{{name.firstName}}")
+        name: genName()
       })}\n`;
       productId += 1;
     }
     return bulk;
   };
 
+  const putItem = async () => {
+    const index = selectCategory();
+    const bulkInsert = genItems(200);
+    const { body } = await client.bulk({ index, body: bulkInsert });
+    // seedResults.push(body);
+  };
+
   for (let i = 1; i <= quantity; i++) {
     putItem().catch(e => console.log(e.stack));
-    console.log(i);
+    console.log(i, categoryName);
   }
   return "all done!";
 };

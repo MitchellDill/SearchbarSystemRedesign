@@ -33,14 +33,13 @@ app.get("/items", async (req, res) => {
   //     return row.name;
   //   })
   // );
-  const { body } = await elasticDb.getRelevantNames(term);
-  res.send(body);
-});
-
-app.post("/seeds", async (req, res) => {
-  const result = await elasticDb.seedElasticDB(10000);
-  console.log(`The seeds be: ${result}`);
-  res.send(result);
+  const hits = await elasticDb.getRelevantNames(term);
+  res.send(hits);
+  // res.send(
+  //   hits.map(hit => {
+  //     return hit._source.name;
+  //   })
+  // );
 });
 
 app.post("/items", async (req, res) => {
@@ -56,6 +55,12 @@ app.get("/find", async (req, res) => {
   const productName = req.query.name.replace(regex, "");
   const idRow = await db.getOneId(productName);
   res.send([{ productID: idRow.productid }]);
+});
+
+app.post("/seeds", async (req, res) => {
+  const result = await elasticDb.seedElasticDB(50000);
+  console.log(`The seeds be: ${result}`);
+  res.send(result);
 });
 
 module.exports = { app };

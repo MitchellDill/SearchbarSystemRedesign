@@ -27,6 +27,8 @@ app.get("/items", async (req, res) => {
   const regex = /[\/:.]+/g;
   const term = req.query.search.replace(regex, "");
   console.log("items endpoint says: ", req.query.search);
+
+  // Postgres Route \/
   // const nameRows = await db.getRelevantNames(term);
   // res.send(
   //   nameRows.map(row => {
@@ -35,6 +37,8 @@ app.get("/items", async (req, res) => {
   // );
   const hits = await elasticDb.getRelevantNames(term);
   res.send(hits);
+
+  // Postgres Route \/
   // res.send(
   //   hits.map(hit => {
   //     return hit._source.name;
@@ -53,8 +57,12 @@ app.get("/find", async (req, res) => {
   console.log("find endpoint says: ", req.query.name);
   const regex = /[\/:.]+/g;
   const productName = req.query.name.replace(regex, "");
-  const idRow = await db.getOneId(productName);
-  res.send([{ productID: idRow.productid }]);
+  const idRow = await elasticDb.getOneId(productName);
+  res.send(idRow);
+
+  // Postgres route \/
+  // const idRow = await db.getOneId(productName);
+  // res.send([{ productID: idRow.productid }]);
 });
 
 app.post("/seeds", async (req, res) => {

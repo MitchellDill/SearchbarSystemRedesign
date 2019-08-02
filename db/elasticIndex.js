@@ -12,10 +12,25 @@ const getRelevantNames = async term => {
         }
       },
       _source: ["productId", "name"],
-      size: 500
+      size: 100
     }
   });
-  return body.hits.hits;
+  return body.hits;
+};
+
+const getOneId = async name => {
+  const { body } = await client.search({
+    body: {
+      query: {
+        match: {
+          name
+        }
+      },
+      _source: ["productId"],
+      size: 1
+    }
+  });
+  return body.hits;
 };
 
 const seedElasticDB = async quantity => {
@@ -84,4 +99,4 @@ const seedElasticDB = async quantity => {
 const fakeString =
   "{{name.firstName}} {{commerce.productName}} {{company.bsBuzz}} {{hacker.ingverb}} {{commerce.color}}";
 
-module.exports = { getRelevantNames, seedElasticDB };
+module.exports = { getRelevantNames, getOneId, seedElasticDB };

@@ -12,10 +12,10 @@ const getRelevantNames = async term => {
         }
       },
       _source: ["productId", "name"],
-      size: 100
+      size: 30
     }
   });
-  return body.hits;
+  return body.hits.hits;
 };
 
 const getOneId = async name => {

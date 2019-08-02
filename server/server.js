@@ -35,15 +35,16 @@ app.get("/items", async (req, res) => {
   //     return row.name;
   //   })
   // );
-  const hits = await elasticDb.getRelevantNames(term);
-  res.send(hits);
 
-  // Postgres Route \/
-  // res.send(
-  //   hits.map(hit => {
-  //     return hit._source.name;
-  //   })
-  // );
+  const hits = await elasticDb.getRelevantNames(term);
+  // res.send(hits);
+  console.log(hits);
+
+  res.send(
+    hits.map(hit => {
+      return hit._source.name;
+    })
+  );
 });
 
 app.post("/items", async (req, res) => {

@@ -34,34 +34,34 @@ class Search extends React.Component {
     );
   }
 
-  autoComplete(input, cb) {
-    let items = this.state.items;
+  // autoComplete(input, cb) {
+  //   let items = this.state.items;
 
-    const findClosestItem = new FuzzySearch(items, [], {
-      caseSensitive: false,
-      sort: true
-    });
+  //   const findClosestItem = new FuzzySearch(items, [], {
+  //     caseSensitive: false,
+  //     sort: true
+  //   });
 
-    let allItemsThatAreClose = findClosestItem.search(input); //will be the input
-    const foundItem = allItemsThatAreClose[0];
+  //   let allItemsThatAreClose = findClosestItem.search(input); //will be the input
+  //   const foundItem = allItemsThatAreClose[0];
 
-    cb(null, foundItem);
-  }
+  //   cb(null, foundItem);
+  // }
 
   handleSubmit(e, selectedOnDropdown) {
     let target = e;
 
-    if (!selectedOnDropdown) {
-      target = this.state.input;
-      this.autoComplete(target, (err, suc) => {
-        if (err) {
-          console.log("didnt worko");
-        } else {
-          target = suc;
-          this.setState({ input: "" }); //will only clearn input if entered or searched, but wont clear if sleected fotm dropdown
-        }
-      });
-    }
+    // if (!selectedOnDropdown) {
+    //   target = this.state.input;
+    //   this.autoComplete(target, (err, suc) => {
+    //     if (err) {
+    //       console.log("didnt worko");
+    //     } else {
+    //       target = suc;
+    //       this.setState({ input: "" }); //will only clearn input if entered or searched, but wont clear if sleected fotm dropdown
+    //     }
+    //   });
+    // }
 
     window.dispatchEvent(
       new CustomEvent("showCart", {
@@ -123,7 +123,7 @@ class Search extends React.Component {
       })
       .then(data => {
         if (data.includes(searchTerm)) {
-          this.handleSubmit(searchTerm, true);
+          // this.handleSubmit(searchTerm, true);
         } else {
           null;
         }
